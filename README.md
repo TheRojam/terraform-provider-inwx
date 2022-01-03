@@ -33,7 +33,7 @@ If you want to install it manually:
 
 Since @ofzhur published this to the [terraform registry](https://registry.terraform.io/providers/ofzhur/inwx/latest), we are able to use it so.
 
-``
+```
 terraform {
   required_providers {
     inwx ={
@@ -48,7 +48,7 @@ provider "inwx" {
   sandbox  = "${var.inwx_sandbox}" // default is false
   tan      = "${var.inwx_tan}"     // if 2-Factor authentication is enabled for your INWX account
 }
-``
+```
 
 ### DNS Records management
 ```
@@ -74,16 +74,31 @@ resource "inwx_record" "example" {
 
 ```
 
-#### Example (variables.tf)
+#### Variables definition in  variables.tf
 ```
-variable "inwx_username" {}
-variable "inwx_password" {}
-variable "inwx_tan" {}
+variable inwx_username {
+ type = string
+ description = "user provided inwx username"
+}
+
+variable inwx_password {
+  type = string
+  description = "user provided inwx password"
+}
+
+variable "inwx_tan" {
+  type = string
+  description = "user provided inwx 2fa tan"
+}
+
 variable "inwx_sandbox" {
   default = false
+  type = string
+  description = inwx sanbox"
 }
 ```
-#### Example (terraform.tfvars)
+
+#### Secrets definition in terraform.tfvars
 ```
 inwx_username = "username"
 inwx_password = "password"
