@@ -9,8 +9,11 @@ With this custom terraform provider plugin you can manage your INWX domains.
 
 ## Usage
 
-This plugin is currently not yet part of the official list of [terraform-providers](https://github.com/terraform-providers),
-therefore you have to install it manually:
+You could either install it manually on your workstation or use it from the [terraform registry](https://registry.terraform.io/providers/ofzhur/inwx/latest).
+
+### manual installation
+
+If you want to install it manually:
 
 1. [Download](https://github.com/andrexus/terraform-provider-inwx/releases) the
    compiled plugin and make the file executable (`chmod +x terraform-provider-inwx`).  
@@ -28,22 +31,45 @@ therefore you have to install it manually:
 
 ### Provider Configuration
 
-```
+Since @ofzhur published this to the [terraform registry](https://registry.terraform.io/providers/ofzhur/inwx/latest), we are able to use it so.
+
+``
+terraform {
+  required_providers {
+    inwx ={
+     source = "ofzhur/inwx"
+    }
+  }
+}
+
 provider "inwx" {
   username = "${var.inwx_username}"
   password = "${var.inwx_password}"
   sandbox  = "${var.inwx_sandbox}" // default is false
   tan      = "${var.inwx_tan}"     // if 2-Factor authentication is enabled for your INWX account
 }
+``
 
-// Example record
+### DNS Records management
+```
+// example mx record
 resource "inwx_record" "example" {
   domain   = "example.com"
   name     = ""
-  type     = "MX"
+  type     = "mx"
   value    = "mx.example.com"
   ttl      = 3600
   priority = 10
+}
+
+// example A record
+resource "inwx_record" "example" {
+  domain   = "example.com"
+  name     = "www" // subdomain e.g. www.example.com
+  type     = "A"
+  value    = "1.2.3.4"
+  ttl      = 3600
+  priority = "" 
 }
 
 ```
